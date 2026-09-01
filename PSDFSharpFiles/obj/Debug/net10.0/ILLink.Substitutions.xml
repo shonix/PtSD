@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="PSDFSharpFiles">
+    <resource name="FSharpSignatureData.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpOptimizationData.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.PSDFSharpFiles" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.PSDFSharpFiles" action="remove"></resource>
+  </assembly>
+</linker>
