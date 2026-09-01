@@ -18,6 +18,12 @@ public class Add extends Binop {
     }
 
     public Expr simplify() {
+            if (e1.equals(new Csti(0))){
+                return e2.simplify();
+            }
+            else if (e2.equals(new Csti(0))){
+                return e1.simplify();
+            }
         return new Add(e1.simplify(), e2.simplify());
     }
 }
