@@ -46,7 +46,7 @@ let rec eval e (env : (string * int) list) : int =
         | "+" -> i1 + i2
         | "-" -> i1 - i2
         | "*" -> i1 * i2
-        | "Max" -> if i1 > i2 then i1 else i2
+        | "Max" -> if i1 > i2 then i1 else i2 // Opgaven bruger "max", "min" og "=="; her bruges "Max", "Min" og "EQ".
         | "Min" -> if i1 < i2 then i1 else i2
         | "EQ"  -> if i1 = i2 then 1 else 0
         | _     -> failwith "unknown Operator"
@@ -55,6 +55,11 @@ let rec eval e (env : (string * int) list) : int =
         match ope with
         | "if" -> if i1 <> 0 then eval e2 env else eval e3 env
         | _ -> failwith "unknown Brim"
+
+        //Brim virker til at være en selvopfundet funktion. Vi bliver bedt
+        //om at bruge If som del af expr med type expr * expr * expr
+        //Brim har string * expr * expr * expr
+        //Lad brim hedde If istedet og match på If og så kan den bare have expr * expr * expr
     
 let exp1 : expr = Prim("Max", (Prim("+", CstI 1, CstI 3)), CstI 5)
 let exp2 : expr = Prim("Min", Prim("-", CstI 5, Prim("+", CstI 2, CstI 1)), Prim("+", Prim("-", CstI 7, CstI 1), CstI 5))
@@ -88,7 +93,8 @@ let rec fmt (e : aexpr) : string =
     | Add (e1, e2) -> fmt e1 + " + " + fmt e2
     | Sub (e1, e2) -> fmt e1 + " - " + fmt e2
     | Mul (e1, e2) -> fmt e1 + " * " + fmt e2
-    
+    //Vi mangler de ydre paranteser i denne funktion
+
 let fmtT1 = fmt aexp1
 let fmtT2 = fmt aexp2
 
@@ -106,9 +112,18 @@ let rec simplify (e : aexpr) : aexpr =
     | Sub (e1, e2) -> simplify (Sub(simplify e1, simplify e2))
     | Add (e1, e2) -> simplify (Add(simplify e1, simplify e2))
     | _ -> failwith "Mystic error"
-
+    //Der er ingen case for CstI i
+    //Der er ingen case for Var x
+    //De tre sidste matches kan kører evigt.
+    //CASE:
+    // simplify (Add(Var "x", Var "y"))
+    // -> simplify (Add(simplify (Var "x"), simplify (Var "y")))
+    // -> simplify (Add(Var "x", Var "y"))
+    // -> gentager sig for evigt, hvis Var x -> Var x findes
+    // CstI og Var mangler base cases, så simplify (CstI 2) og simplify (Var "x") crasher.
 let SmpT : aexpr = Mul(Add(CstI 1 , CstI 0), Add(Var "x", CstI 0))
 
+//Der mangler en variable du kan differentiere imod. Like, der manlger (x : int) 
 let rec diffr (e : aexpr) : aexpr =
     match e with
     | CstI _ -> CstI 0
@@ -118,6 +133,9 @@ let rec diffr (e : aexpr) : aexpr =
     | Mul (Var(x), _) -> Var(x)          
     | Mul (_, Var(x)) -> Var(x)     //I think there are some patterns i dont hit, but lets come back later
     | _ -> failwith "sad error"
-    
+    // Mul skal bruge produktreglen, ikke bare differentiere begge sider og gange dem.
+    //(f(x) * g(x))' -> f(x)' * g(x) + f(x) * g(x)'
+    //så:
+    //|Mul(fx, gx) -> Add (Mul( ((diff x fx), gx), Mul(fx, diff x gx)))
 let difT : aexpr = Mul(CstI 18, Var "x")
 
