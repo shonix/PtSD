@@ -9,14 +9,17 @@ public class Sub extends Binop {
         this.e2 = e2;
     }
 
+    @Override
     public String myToString() {
-        return e1.toString() + " - " + e2.toString();
+        return "(" + e1.myToString() + " - " + e2.myToString() + ")"; 
     }
 
+    @Override
     public int eval(HashMap<String, Integer> env) {
         return e1.eval(env) - e2.eval(env);
     }
 
+    @Override
     public Expr simplify() {
         if (e2.equals(new Csti(0))){
             return e1.simplify();

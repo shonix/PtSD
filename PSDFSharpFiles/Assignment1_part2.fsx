@@ -9,6 +9,8 @@ module PSDExercises.Assignment1_part2
 
 
 //Contains 2.1, 2.2 and 2.3
+
+//Exercise 2.1
 type expr = 
   | CstI of int
   | Var of string
@@ -48,6 +50,7 @@ let rec lookup (env : (string * expr) list) x =
     | []        -> failwith (x + " not found")
     | (y, v)::r -> if x=y then v else lookup r x;;
     
+//Exercise 2.1
 let rec eval e (env : (string * expr) list) : int =
     match e with
     | CstI i            -> i    
@@ -61,7 +64,7 @@ let rec eval e (env : (string * expr) list) : int =
     | Prim _            -> failwith "unknown primitive";;
 
 let run e = eval e [];;
-let res = List.map run [e1;e2;e3;e4;e5;e7]  (* e6 has free variables *)
+let res = List.map run [e1;e2;e3;e4;e5;e7];;  (* e6 has free variables *)
 
 
 (* ---------------------------------------------------------------------- *)
@@ -210,13 +213,15 @@ let rec minus (xs, ys) =
 
 (* Find all variables that occur free in expression e *)
 
+//Exercise 2.2
 let rec freevars e : string list =
     match e with
     | CstI i -> []
     | Var x  -> [x]
     | Let([x, erhs], ebody) -> 
           union (freevars erhs, minus (freevars ebody, [x]))
-    | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;
+    | Prim(ope, e1, e2) -> union (freevars e1, freevars e2)
+    | _ -> failwith "Environment is empty";;
 
 (* Alternative definition of closed *)
 
@@ -244,6 +249,7 @@ let rec getindex vs x =
 
 (* Compiling from expr to texpr *)
 
+//Exercise 2.3
 let rec tcomp (e : expr) (cenv : string list) : texpr =
     match e with
     | CstI i -> TCstI i
@@ -251,8 +257,9 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
     | Let([x, erhs], ebody) -> 
       let cenv1 = x :: cenv 
       TLet(tcomp erhs cenv, tcomp ebody cenv1)
-    | Prim(ope, e1, e2) -> TPrim(ope, tcomp e1 cenv, tcomp e2 cenv);;
-
+    | Prim(ope, e1, e2) -> TPrim(ope, tcomp e1 cenv, tcomp e2 cenv)
+    | _ -> failwith "unknown Operator";;
+    
 (* Evaluation of target expressions with variable indexes.  The
    run-time environment renv is a list of variable values (ints).  *)
 
