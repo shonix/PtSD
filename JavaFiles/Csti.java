@@ -8,7 +8,7 @@ public class Csti extends Expr {
     }
 
     @Override
-    public String myToString() {
+    public String toString() {
         return Integer.toString(nr);
     }
 

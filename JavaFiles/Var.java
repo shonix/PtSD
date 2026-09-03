@@ -8,7 +8,7 @@ public class Var extends Expr {
     }
 
     @Override
-    public String myToString() {
+    public String toString() {
         return s;
     }
 

@@ -10,8 +10,8 @@ public class Add extends Binop {
     }
 
     @Override
-    public String myToString() {
-        return "(" + e1.myToString() + " + " + e2.myToString() + ")"; 
+    public String toString() {
+        return "(" + e1.toString() + " + " + e2.toString() + ")"; 
     }
 
     @Override

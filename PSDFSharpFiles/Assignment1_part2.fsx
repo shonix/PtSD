@@ -221,7 +221,7 @@ let rec freevars e : string list =
     | Let([x, erhs], ebody) -> 
           union (freevars erhs, minus (freevars ebody, [x]))
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2)
-    | _ -> failwith "Environment is empty";;
+    | _ -> failwith "Environment doesn't match";;
 
 (* Alternative definition of closed *)
 
@@ -258,7 +258,7 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
       let cenv1 = x :: cenv 
       TLet(tcomp erhs cenv, tcomp ebody cenv1)
     | Prim(ope, e1, e2) -> TPrim(ope, tcomp e1 cenv, tcomp e2 cenv)
-    | _ -> failwith "unknown Operator";;
+    | _ -> failwith "Environment doesn't match";;
     
 (* Evaluation of target expressions with variable indexes.  The
    run-time environment renv is a list of variable values (ints).  *)
