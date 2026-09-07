@@ -9,6 +9,7 @@
     <ItemGroup>
         <Compile Include="Assignment1.fs" />
         <Compile Include="Assignment1_part2.fs" />
+        <Content Include="Machine.java" />
     </ItemGroup>
 
 </Project>

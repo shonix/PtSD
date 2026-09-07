@@ -399,8 +399,10 @@ let assembleInstr (ins : sinstr) : int list =
 let assemble (inss : sinstr list) : int list =
     List.collect assembleInstr inss
 
-//compile and push to txt
-let scompile (e : expr) : unit =
-    intsToFile (assemble (scomp e [])) "out"
+let scompile (e : expr) : int list =
+    assemble (scomp e [])
+    
+let compileToFile (e : expr) (fname : string) : unit =
+    intsToFile (scompile e) fname
     
 (* -----------------------------------------------------------------  *)
