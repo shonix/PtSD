@@ -383,5 +383,23 @@ let intsToFile (inss : int list) (fname : string) =
     System.IO.File.WriteAllText(fname, text);;
 
 
+//assignment 2.4
+//Translate sinstr -> bytecode found in machine.java
+let assembleInstr (ins : sinstr) : int list =
+    match ins with
+    | SCstI n -> [0; n]
+    | SVar n  -> [1; n]
+    | SAdd    -> [2]
+    | SSub    -> [3]
+    | SMul    -> [4]
+    | SPop    -> [5]
+    | SSwap   -> [6]
 
+//run the translater over given sinstr list :D
+let assemble (inss : sinstr list) : int list =
+    List.collect assembleInstr inss
+
+let scompile (e : expr) : int list =
+    assemble (scomp e [])
+    
 (* -----------------------------------------------------------------  *)
