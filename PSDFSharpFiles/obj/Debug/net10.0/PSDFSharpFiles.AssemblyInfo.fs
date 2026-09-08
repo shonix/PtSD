@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("PSDFSharpFiles")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2f1bb96d519af88f82a71dc875e6d54c64f1306")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23c90798394c41124a7a95efb4fbc97f266aeb6c")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("PSDFSharpFiles")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("PSDFSharpFiles")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
