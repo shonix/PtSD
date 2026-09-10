@@ -8,10 +8,10 @@ See the file `Intcomp1.fs` for implementation of the function `assemble` and `Ma
 The regular expression that can recognize all sequences described is $(b|ab)*a?$.
 
 The NFA corresponding to the regular expression is:
-![](/Users/nch/RiderProjects/PtSD/image/NFA.png)
+![](image/NFA.png)
 
 The DFA corresponding to the NFA is below:
-![](/Users/nch/RiderProjects/PtSD/image/DFA.png)
+![](image/DFA.png)
 
 ## Exercise 3.3
 The rightmost derivation of the string: `let z = (17) in z + 2 * 3 end EOF`:
@@ -34,4 +34,4 @@ The rightmost derivation of the string: `let z = (17) in z + 2 * 3 end EOF`:
 
 ## Exercise 3.4
 Drawing of the above derivation as a tree:
-![](/Users/nch/RiderProjects/PtSD/image/TREE.png)
+![](image/TREE.png)
