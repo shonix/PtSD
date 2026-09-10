@@ -11,7 +11,7 @@
         <Compile Include="Assignment1_part2.fs" />
         <Content Include="Machine.java" />
         <Compile Include="RegularExpression.fs" />
-        <Compile Include="Intcomp1.fsx.fs" />
+        <Compile Include="Intcomp1.fs" />
     </ItemGroup>
 
 </Project>
