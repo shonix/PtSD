@@ -1,6 +1,6 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PSDFSharpFiles", "PSDFSharpFiles\PSDFSharpFiles.fsproj", "{E481FE1B-EDC7-46BD-A8B0-4A706B799C4E}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PSDFSharpFiles", "ProgrammingLanguageConcepts\plcFSharp\PSDFSharpFiles.fsproj", "{E481FE1B-EDC7-46BD-A8B0-4A706B799C4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
