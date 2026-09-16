@@ -265,6 +265,7 @@ type sinstr =
   | SAdd                                (* pop args, push sum     *)
   | SSub                                (* pop args, push diff.   *)
   | SMul                                (* pop args, push product *)
+  | SIf of sinstr list * sinstr list    (* If expression. our list is sinister, and we pop some args, and push some conditions *)
   | SPop                                (* pop value/unbind var   *)
   | SSwap                               (* exchange top and next  *)
  
@@ -280,6 +281,7 @@ let rec seval (inss : sinstr list) stack =
        | SSub,     i2::i1::stkr -> seval rest (i1-i2 :: stkr)
        | SMul,     i2::i1::stkr -> seval rest (i1*i2 :: stkr)
        | SPop,        _ :: stkr -> seval rest stkr
+       | SIf(i2, i3), i1 :: stkr ->if i1 <> 0 then seval (i2 @ rest) stkr else seval (i3 @ rest) stkr (* Yeah thats right! We've implemented this! Huzzzzar!*)
        | SSwap,    i2::i1::stkr -> seval rest (i1::i2::stkr)
        | _,        _            -> raise (Failure "seval: error")
 
@@ -309,6 +311,7 @@ let rec scomp e (cenv : rtvalue list) : sinstr list =
             scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SSub] 
       | Prim("*", e1, e2) -> 
             scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SMul] 
+      | If (e1, e2, e3) -> scomp e1 cenv @ [SIf(scomp e2 cenv, scomp e3 cenv)] (*If you're inspecting this deeply into our implementation then man, nice! thanks! anyway here is 3.7*)
       | Prim _ -> raise (Failure "scomp: unknown operator")
 
 let s1 = scomp e1 []

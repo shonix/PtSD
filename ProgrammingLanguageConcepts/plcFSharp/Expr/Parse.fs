@@ -1,5 +1,6 @@
 (* File Expr/Parse.fs *)
 (* Lexing and parsing of simple expressions using fslex and fsyacc *)
+(*dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll Absyn.fs ExprPar.fs ExprLex.fs Expr.fs Parse.fs Exercise3_5.fs*)
 
 module Parse
 
@@ -40,3 +41,5 @@ let compString (str : string) : sinstr list =
 
 // Example Assignment 3.5
 let ex1 = fromString "2 + 3 * 4"
+// Example Assignment 3.7
+let ex2 = compString "if 1 then 2 else 3"
