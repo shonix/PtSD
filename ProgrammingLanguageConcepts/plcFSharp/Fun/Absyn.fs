@@ -10,4 +10,4 @@ type expr =
   | Prim of string * expr * expr
   | If of expr * expr * expr
   | Letfun of string * string list * expr * expr    (* (f, x (list of parameters), fBody, letBody) *)
-  | Call of expr list
+  | Call of expr * expr list
