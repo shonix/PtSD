@@ -9,7 +9,6 @@
 
 %token <int> CSTINT
 %token <string> NAME
-%token <string list> PARAMS
 %token <bool> CSTBOOL
 
 %token ELSE END FALSE IF IN LET NOT THEN TRUE
@@ -28,6 +27,8 @@
 %start Main
 %type <Absyn.expr> Main Expr AtExpr Const
 %type <Absyn.expr> AppExpr
+%type <Absyn.expr list> Arguments
+%type <string list> Params
 
 %%
 
@@ -57,18 +58,24 @@ AtExpr:
     Const                               { $1                     }
   | NAME                                { Var $1                 }
   | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
-  | LET NAME PARAMS EQ Expr IN Expr END { Letfun($2, $3, $5, $7) }
+  | LET NAME Params EQ Expr IN Expr END { Letfun($2, $3, $5, $7) }
   | LPAR Expr RPAR                      { $2                     }
 ;
 
 AppExpr:
-    AtExpr Arguments                    { Call($1, $2)           } //
-  | AppExpr Arguments                   { Call($1, $2)           } //
+    AtExpr Arguments                    { Call($1, $2)           }
+  | AppExpr Arguments                   { Call($1, $2)           }
 ;
 
-Arguments:                              (* This is what we did to fix 4.4*)
+Arguments:
   AtExpr                                {[$1]}
   | AtExpr Arguments                    {$1 :: $2}
+;
+
+Params:
+    NAME                                { [$1]                   }
+  | NAME Params                         { $1 :: $2               }
+;
 
 Const:
     CSTINT                              { CstI($1)               }

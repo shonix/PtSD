@@ -34,7 +34,7 @@ let fromFile (filename : string) =
 (* Exercise it *)
 
 let e1 = fromString "5+7";;
-let e2 = fromString "let f x = x + 7 in f 2 end";;
+let e2 = fromString "let x = x + 7 in f 2 end";;
 
 (* Examples in concrete syntax *)
 

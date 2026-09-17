@@ -11,7 +11,6 @@
         <Compile Include="Intro/Intro2.fs" />
         <Compile Include="Intcomp/Intcomp1.fs" />
         <Content Include="Intcomp/Machine.java" />
-        <Compile Include="Expr/Exercise3_2.fs" />
         <Compile Include="Expr/RegularExpression.fs" />
     </ItemGroup>
 
