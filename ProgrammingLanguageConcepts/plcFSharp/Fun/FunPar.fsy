@@ -9,6 +9,7 @@
 
 %token <int> CSTINT
 %token <string> NAME
+%token <string list> PARAMS
 %token <bool> CSTBOOL
 
 %token ELSE END FALSE IF IN LET NOT THEN TRUE
@@ -56,14 +57,18 @@ AtExpr:
     Const                               { $1                     }
   | NAME                                { Var $1                 }
   | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
-  | LET NAME NAME EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
+  | LET NAME PARAMS EQ Expr IN Expr END { Letfun($2, $3, $5, $7) }
   | LPAR Expr RPAR                      { $2                     }
 ;
 
 AppExpr:
-    AtExpr AtExpr                       { Call($1, $2)           }
-  | AppExpr AtExpr                      { Call($1, $2)           }
+    AtExpr Arguments                    { Call($1, $2)           } //
+  | AppExpr Arguments                   { Call($1, $2)           } //
 ;
+
+Arguments:                              (* This is what we did to fix 4.4*)
+  AtExpr                                {[$1]}
+  | AtExpr Arguments                    {$1 :: $2}
 
 Const:
     CSTINT                              { CstI($1)               }
