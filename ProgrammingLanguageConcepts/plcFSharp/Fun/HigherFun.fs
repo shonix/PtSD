@@ -29,7 +29,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
-  | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Closure of string * string list * expr * value env       (* (f, x, fBody, fDeclEnv) *)
 
 let rec eval (e : expr) (env : value env) : value =
     match e with
@@ -62,8 +62,9 @@ let rec eval (e : expr) (env : value env) : value =
       let fClosure = eval eFun env  (* Different from Fun.fs - to enable first class functions *)
       match fClosure with
       | Closure (f, x, fBody, fDeclEnv) ->
-        let xVal = eval eArg env
-        let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
+        let xVal = List.map(fun e -> eval e env) eArg
+        let bindings = List.zip x xVal
+        let fBodyEnv = bindings @ (f, fClosure) :: fDeclEnv
         in eval fBody fBodyEnv
       | _ -> failwith "eval Call: not a function";;
 
@@ -71,65 +72,65 @@ let rec eval (e : expr) (env : value env) : value =
 
 let run e = eval e [];;
 
-(* Examples in abstract syntax *)
+// (* Examples in abstract syntax *)
 
-let ex1 = Letfun("f1", "x", Prim("+", Var "x", CstI 1), 
-                 Call(Var "f1", CstI 12));
+let ex1 = Letfun("f1", ["x"], Prim("+", Var "x", CstI 1), 
+                 Call(Var "f1", [CstI 12]));
 
 (* Factorial *)
 
-let ex2 = Letfun("fac", "x", 
-                 If(Prim("=", Var "x", CstI 0),
-                    CstI 1,
-                    Prim("*", Var "x", 
-                              Call(Var "fac", 
-                                   Prim("-", Var "x", CstI 1)))),
-                 Call(Var "fac", Var "n"));
+// let ex2 = Letfun("fac", "x", 
+//                  If(Prim("=", Var "x", CstI 0),
+//                     CstI 1,
+//                     Prim("*", Var "x", 
+//                               Call(Var "fac", 
+//                                    Prim("-", Var "x", CstI 1)))),
+//                  Call(Var "fac", Var "n"));
 
-(* let fac10 = eval ex2 [("n", Int 10)];; *)
+// (* let fac10 = eval ex2 [("n", Int 10)];; *)
 
-let ex3 = 
-    Letfun("tw", "g", 
-           Letfun("app", "x", Call(Var "g", Call(Var "g", Var "x")), 
-                  Var "app"),
-           Letfun("mul3", "y", Prim("*", CstI 3, Var "y"), 
-                  Call(Call(Var "tw", Var "mul3"), CstI 11)));;
+// let ex3 = 
+//     Letfun("tw", "g", 
+//            Letfun("app", "x", Call(Var "g", Call(Var "g", Var "x")), 
+//                   Var "app"),
+//            Letfun("mul3", "y", Prim("*", CstI 3, Var "y"), 
+//                   Call(Call(Var "tw", Var "mul3"), CstI 11)));;
 
-let ex4 = 
-    Letfun("tw", "g",
-           Letfun("app", "x", Call(Var "g", Call(Var "g", Var "x")), 
-                  Var "app"),
-           Letfun("mul3", "y", Prim("*", CstI 3, Var "y"), 
-                  Call(Var "tw", Var "mul3")));;
+// let ex4 = 
+//     Letfun("tw", "g",
+//            Letfun("app", "x", Call(Var "g", Call(Var "g", Var "x")), 
+//                   Var "app"),
+//            Letfun("mul3", "y", Prim("*", CstI 3, Var "y"), 
+//                   Call(Var "tw", Var "mul3")));;
 
-(* let add1 x = x + 1 in add1 end *)
-(*open Absyn*)
-(*open HigherFun*)
-let add1 = Letfun("add1", "x",
-                  Prim("+", Var "x", CstI 1),
-                  Var "add1")
-let add1C = eval add1 []
-let add1with2 = eval (Call(Var "add1C", CstI 2)) [("add1C",add1C)]
+// (* let add1 x = x + 1 in add1 end *)
+// (*open Absyn*)
+// (*open HigherFun*)
+// let add1 = Letfun("add1", "x",
+//                   Prim("+", Var "x", CstI 1),
+//                   Var "add1")
+// let add1C = eval add1 []
+// let add1with2 = eval (Call(Var "add1C", CstI 2)) [("add1C",add1C)]
 
-(* let tw g = let app y = g (g y) in app end in tw end *)
-let tw = 
-  Letfun("tw", "g", 
-    Letfun("app", "y", Call(Var "g", Call(Var "g", Var "y")), Var "app"),
-    Var "tw")
-let twC = eval tw []
+// (* let tw g = let app y = g (g y) in app end in tw end *)
+// let tw = 
+//   Letfun("tw", "g", 
+//     Letfun("app", "y", Call(Var "g", Call(Var "g", Var "y")), Var "app"),
+//     Var "tw")
+// let twC = eval tw []
 
 
-let twAdd1C = eval (Call(Var "tw", Var "add1")) [("tw",twC);("add1",add1C)]
-let res = eval (Call(Var "twAdd1C", CstI 1)) [("twAdd1C",twAdd1C)]
+// let twAdd1C = eval (Call(Var "tw", Var "add1")) [("tw",twC);("add1",add1C)]
+// let res = eval (Call(Var "twAdd1C", CstI 1)) [("twAdd1C",twAdd1C)]
 
-(* We are not restricting environment to only contain free variables
-   when we build the closure for a function. This make the closure for
-   twAdd1C contain the variable tw. We can delete this from the
-   closure for twAdd1C and it still works. *)
+// (* We are not restricting environment to only contain free variables
+//    when we build the closure for a function. This make the closure for
+//    twAdd1C contain the variable tw. We can delete this from the
+//    closure for twAdd1C and it still works. *)
 
-(* open HigherFun *)
-let twAdd1C2 =
-  Closure
-    ("app", "y", Call (Var "g", Call (Var "g", Var "y")),
-     [("g", Closure ("add1", "x", Prim ("+", Var "x", CstI 1), []))])
-let res2 = eval (Call(Var "twAdd1C2", CstI 1)) [("twAdd1C2",twAdd1C2)]
+// (* open HigherFun *)
+// let twAdd1C2 =
+//   Closure
+//     ("app", "y", Call (Var "g", Call (Var "g", Var "y")),
+//      [("g", Closure ("add1", "x", Prim ("+", Var "x", CstI 1), []))])
+// let res2 = eval (Call(Var "twAdd1C2", CstI 1)) [("twAdd1C2",twAdd1C2)]
