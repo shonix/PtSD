@@ -5,6 +5,7 @@ module Absyn
 type expr = 
   | CstI of int
   | CstB of bool
+  | Fun of string * expr                       (* (x, body, declEnv) Ex 6.2 *)
   | Var of string
   | Let of string * expr * expr
   | Prim of string * expr * expr

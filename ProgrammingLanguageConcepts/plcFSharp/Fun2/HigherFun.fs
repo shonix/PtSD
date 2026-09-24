@@ -30,6 +30,7 @@ let rec lookup env x =
 type value = 
   | Int of int
   | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Clos of string * expr * value env                   (* (x, body, declEnv) Ex. 6.2 *)
 
 let rec eval (e : expr) (env : value env) : value =
     match e with
@@ -46,7 +47,7 @@ let rec eval (e : expr) (env : value env) : value =
       | ("=", Int i1, Int i2) -> Int (if i1 = i2 then 1 else 0)
       | ("<", Int i1, Int i2) -> Int (if i1 < i2 then 1 else 0)
       |  _ -> failwith "unknown primitive or wrong type"
-    | Let(x, eRhs, letBody) -> 
+    | Let(x, eRhs, letBody) ->
       let xVal = eval eRhs env
       let letEnv = (x, xVal) :: env 
       eval letBody letEnv
@@ -58,9 +59,14 @@ let rec eval (e : expr) (env : value env) : value =
     | Letfun(f, x, fBody, letBody) -> 
       let bodyEnv = (f, Closure(f, x, fBody, env)) :: env
       eval letBody bodyEnv
+    | Fun(x, eBody) -> Clos(x, eBody, env)
     | Call(eFun, eArg) -> 
       let fClosure = eval eFun env  (* Different from Fun.fs - to enable first class functions *)
       match fClosure with
+      | Clos(x, ebody, fDeclEnv) ->             (*Adding Clos type to be evaluate. Ex. 6.2*)
+        let xVal = eval eArg env
+        let fBodyEnv = (x, xVal) :: fDeclEnv
+        in eval ebody fBodyEnv
       | Closure (f, x, fBody, fDeclEnv) ->
         let xVal = eval eArg env
         let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv

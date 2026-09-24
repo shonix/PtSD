@@ -36,6 +36,7 @@ let rec lookup env x =
 type typ =
   | TypI                                (* int                         *)
   | TypB                                (* bool                        *)
+  | TypL of typ                         (* list, element type is typ   *) // Ex 5.7
   | TypF of typ * typ                   (* (argumenttype, resulttype)  *)
 
 (* New abstract syntax with explicit types, instead of Absyn.expr: *)
@@ -47,6 +48,7 @@ type tyexpr =
   | Let of string * tyexpr * tyexpr
   | Prim of string * tyexpr * tyexpr
   | If of tyexpr * tyexpr * tyexpr
+  | List of tyexpr list * typ
   | Letfun of string * string * typ * tyexpr * typ * tyexpr
           (* (f,       x,       xTyp, fBody,  rTyp, letBody *)
   | Call of tyexpr * tyexpr
@@ -117,6 +119,10 @@ let rec typ (e : tyexpr) (env : typ env) : typ =
       let xTyp = typ eRhs env
       let letBodyEnv = (x, xTyp) :: env 
       typ letBody letBodyEnv
+    | List(l, t) -> //Ex. 5.7 forall is great and it checks all types is same type thank you and please.
+      if List.forall(fun elem -> typ elem env = t) l 
+      then t 
+      else failwith "List: List types differ" 
     | If(e1, e2, e3) -> 
       match typ e1 env with
       | TypB -> let t2 = typ e2 env

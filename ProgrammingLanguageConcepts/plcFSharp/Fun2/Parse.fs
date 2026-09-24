@@ -32,7 +32,7 @@ let fromFile (filename : string) =
                   (exn.Message) filename (pos.Line+1) pos.Column
 
 (* Exercise it *)
-
+let a1 = fromString @"fun x -> 2 * x";;
 let e1 = fromString "5+7";;
 let e2 = fromString "let f x = x + 7 in f 2 end";;
 

@@ -26,6 +26,7 @@ let keyword s =
     | "false" -> CSTBOOL false
     | "if"    -> IF
     | "in"    -> IN
+    | "fun"   -> FUN
     | "let"   -> LET
     | "not"   -> NOT
     | "then"  -> THEN
@@ -48,6 +49,7 @@ rule Token = parse
   | '<'             { LT }
   | ">="            { GE }
   | "<="            { LE }
+  | "->"            { ARR }
   | '+'             { PLUS }                     
   | '-'             { MINUS }                     
   | '*'             { TIMES }                     

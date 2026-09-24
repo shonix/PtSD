@@ -10,6 +10,7 @@ type token =
   | LT
   | GE
   | LE
+  | ARR
   | PLUS
   | MINUS
   | TIMES
@@ -21,6 +22,7 @@ type token =
   | IF
   | IN
   | LET
+  | FUN
   | NOT
   | THEN
   | TRUE
@@ -37,6 +39,7 @@ type tokenId =
     | TOKEN_LT
     | TOKEN_GE
     | TOKEN_LE
+    | TOKEN_ARR
     | TOKEN_PLUS
     | TOKEN_MINUS
     | TOKEN_TIMES
@@ -48,6 +51,7 @@ type tokenId =
     | TOKEN_IF
     | TOKEN_IN
     | TOKEN_LET
+    | TOKEN_FUN
     | TOKEN_NOT
     | TOKEN_THEN
     | TOKEN_TRUE

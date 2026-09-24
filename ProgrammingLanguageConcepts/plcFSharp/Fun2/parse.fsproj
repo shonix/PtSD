@@ -16,6 +16,7 @@
     <Compile Include="FunPar.fs" />        
     <Compile Include="FunLex.fs" />
     <Compile Include="Parse.fs" />
+    <Compile Include="HigherFun.fs" />
   </ItemGroup>
 
     <ItemGroup>
