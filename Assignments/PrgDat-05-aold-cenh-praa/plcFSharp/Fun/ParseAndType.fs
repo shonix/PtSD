@@ -5,7 +5,19 @@ module ParseAndType
 let fromString = Parse.fromString;;
 
 let inferType = TypeInference.inferType;;
-    
+//Assignment 6.5
+let ex01 = inferType(fromString("let f x = 1 in f f end"));;
+//let ex02 = inferType(fromString("let f g = g g in f end"));; Can't run - Circularity. 
+let ex03 = inferType(fromString("let f x = let g y = y in g false end in f 42 end"));;
+//let ex04 = inferType(fromString("let f x = let g y = if true then y else x in g false end in f 42 end"));;
+let ex05 = inferType(fromString("let f x = let g y = if true then y else x in g false end in f true end"));;
+
+
+let f x = 
+  let g y =
+    if true then y else x
+
+f true false
 (* Well-typed examples ---------------------------------------- *)
 
 (* In the let-body, f is polymorphic *)
