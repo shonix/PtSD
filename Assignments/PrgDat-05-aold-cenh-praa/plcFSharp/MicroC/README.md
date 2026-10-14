@@ -41,9 +41,7 @@ described below.
 ### Load the lexer, parser, and interpreter in F# Interactive
 
 ```text
-dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll \
-    Absyn.fs CPar.fs CLex.fs Parse.fs \
-    Interp.fs ParseAndRun.fs
+dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Interp.fs ParseAndRun.fs
 ```
 
 Then execute:
@@ -71,9 +69,7 @@ run (fromFile "CEx/ex11.c") [8];;
 Start F# Interactive with the compiler components:
 
 ```bash
-dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll \
-    Absyn.fs CPar.fs CLex.fs Parse.fs \
-    Machine.fs Comp.fs ParseAndComp.fs
+dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll  Absyn.fs CPar.fs CLex.fs Parse.fs  Machine.fs Comp.fs ParseAndComp.fs
 ```
 
 Then execute:
@@ -137,7 +133,7 @@ or
 gcc -Wall machine.c -o machine
 ```
 
-#### On x86 platform with Windows
+### On x86 platform with Windows
 
 We recommend using `clang` as compiler. See [Platform
 Dependencies](../../README.md) on how to install across platforms.
@@ -183,9 +179,7 @@ Execute the compiled target program `ex11.out`:
 Start F# Interactive with the continuation-based compiler:
 
 ```bash
-dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll \
-    Absyn.fs CPar.fs CLex.fs Parse.fs \
-    Machine.fs Contcomp.fs ParseAndComp.fs
+dotnet fsi -r bin/Debug/net10.0/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Contcomp.fs ParseAndComp.fs
 ```
 
 Then execute:
