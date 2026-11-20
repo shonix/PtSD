@@ -286,3 +286,8 @@ Wheras the fixed queue runs without problem for atleast 1½ minutes.
 ```
 
 So by adding just the line where we set `first.next = null;` we make sure we dont keep references by non used nodes alive, and they're able to be garbage collected. 
+
+    if ( match ( buf ) ) {
+        haha = 1;
+    }
+}
